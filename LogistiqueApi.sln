@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29920.165
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogistiqueApi", "LogistiqueApi.csproj", "{39CC86B7-36E3-47BB-8258-C64D1E9CE351}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogistiqueAuthority", "..\LogistiqueAuthority\LogistiqueAuthority.csproj", "{AB1C3E12-5823-4C54-A433-72DA870B4813}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{39CC86B7-36E3-47BB-8258-C64D1E9CE351}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39CC86B7-36E3-47BB-8258-C64D1E9CE351}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39CC86B7-36E3-47BB-8258-C64D1E9CE351}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39CC86B7-36E3-47BB-8258-C64D1E9CE351}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB1C3E12-5823-4C54-A433-72DA870B4813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB1C3E12-5823-4C54-A433-72DA870B4813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB1C3E12-5823-4C54-A433-72DA870B4813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB1C3E12-5823-4C54-A433-72DA870B4813}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6DBC4B5F-EC2B-4249-8093-2E002211FA72}
+	EndGlobalSection
+EndGlobal
