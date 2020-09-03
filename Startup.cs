@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Python.Runtime;
 using System;
+using System.IO;
 
 namespace LogistiqueApi
 {
@@ -18,6 +19,7 @@ namespace LogistiqueApi
             IConfiguration configuration = new ConfigurationBuilder()
                    .AddJsonFile("appsettings.json")
                    .Build();
+            services.AddMemoryCache();
             services.AddIdentityServer(options =>
                         {
                             options.IssuerUri = configuration["IdentityServer:Issuer"];
@@ -49,7 +51,6 @@ namespace LogistiqueApi
                 options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
                 options.HttpsPort = 5001;
             });
-
             services.AddControllers();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
