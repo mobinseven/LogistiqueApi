@@ -43,7 +43,8 @@ Then generate the .pfx based the .crt and .key:
 ```sh
 sudo openssl pkcs12 -export -out ssl.pfx -inkey ssl-selfsigned.key -in ssl-selfsigned.crt -name "Localhost Selfsigned"
 ```
-##Install .crt on Linux
+## Install .crt on Linux
+
 To install the .crt on Linux machine:([this comment](https://github.com/dotnet/aspnetcore/issues/7246#issuecomment-541063133))
 ```sh
 sudo cp ssl-selfsigned.crt /usr/local/share/ca-certificates/ssl-selfsigned.crt
