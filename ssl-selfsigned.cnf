@@ -255,7 +255,13 @@ basicConstraints = critical,CA:true
 # Where 'obj' is a standard or added object
 # You can even override a supported extension:
 # basicConstraints= critical, DER:30:03:01:01:FF
-subjectAltName=DNS:localhost
+subjectAltName = @alt_names
+keyUsage       = keyCertSign, nonRepudiation, digitalSignature, keyEncipherment
+
+[alt_names]
+DNS.1   = localhost
+DNS.2   = 127.0.0.1
+DNS.3   = 213.233.161.231
 [ crl_ext ]
 
 # CRL extensions.
