@@ -20,11 +20,12 @@ namespace LogistiqueApi
                    .AddJsonFile("appsettings.json")
                    .Build();
             services.AddMemoryCache();
+            Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
             services.AddIdentityServer(options =>
                         {
                             options.IssuerUri = configuration["IdentityServer:Issuer"];
                         })
-                    .AddDeveloperSigningCredential()
+                    .LoadSigningCredentialFrom(configuration["certificates:signing"])
                     .AddInMemoryApiResources(LogistiqueAuthority.Data.ResourceManager.Apis)
                     .AddInMemoryClients(LogistiqueAuthority.Data.ClientManager.Clients);
             services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)

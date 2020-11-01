@@ -28,14 +28,14 @@ namespace LogistiqueApi.Controllers
         [HttpPost("solve")]
         public async Task<ActionResult<string>> Solve()
         {
-            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, @"Resources\rpc.py"));
+            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, Path.Combine("Resources","rpc.py")));
             string problem = new StreamReader(HttpContext.Request.Body).ReadToEnd();
             return AddProblem(problem, module);
         }
         [HttpPost("test")]
         public async Task<ActionResult> Test()
         {
-            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, @"Resources\rpc_test.py"));
+            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, Path.Combine("Resources","rpc_test.py")));
             string problem = new StreamReader(HttpContext.Request.Body).ReadToEnd();
             return AddProblem(problem, module);
         }
