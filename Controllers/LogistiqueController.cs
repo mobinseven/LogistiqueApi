@@ -26,16 +26,16 @@ namespace LogistiqueApi.Controllers
             _cache = memoryCache;
         }
         [HttpPost("solve")]
-        public async Task<ActionResult<string>> Solve()
+        public ActionResult<string> Solve()
         {
-            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, Path.Combine("Resources","rpc.py")));
+            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, Path.Combine("Resources", "rpc.py")));
             string problem = new StreamReader(HttpContext.Request.Body).ReadToEnd();
             return AddProblem(problem, module);
         }
         [HttpPost("test")]
-        public async Task<ActionResult> Test()
+        public ActionResult Test()
         {
-            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, Path.Combine("Resources","rpc_test.py")));
+            string module = System.IO.File.ReadAllText(Path.Combine(Environment.CurrentDirectory, Path.Combine("Resources", "rpc_test.py")));
             string problem = new StreamReader(HttpContext.Request.Body).ReadToEnd();
             return AddProblem(problem, module);
         }
@@ -44,7 +44,7 @@ namespace LogistiqueApi.Controllers
         {
             try
             {
-                int hash = problem.GetHashCode();
+                int hash = problem.GetHashCode() & 0x7FFFFFFF;
                 if (Request.Headers.Keys.Contains("Origin"))
                 {
                     StringValues values;
@@ -55,23 +55,42 @@ namespace LogistiqueApi.Controllers
                         {
                             _cache.Set(hash, values.First());
                             Console.WriteLine(hash);
-                            Task.Factory.StartNew(() =>
+                            Task.Factory.StartNew(async () =>
                             {
-                                string result;
-                                using (Py.GIL())
+
+                                string fileName = Path.Combine(Environment.CurrentDirectory, $"Plans/Plan-{hash}-problem.json");
+                                try
                                 {
-                                    dynamic rpc = PythonEngine.ModuleFromString("rpc", module);
-                                    dynamic Route = rpc.solver(problem);
-                                    result = Convert.ToString(Route);
-                                }
-                                using (WebClient wc = new WebClient())
-                                {
-                                    string address;
-                                    if (_cache.TryGetValue(hash, out address))
+                                    string result;
+                                    if (!Directory.Exists("Plans"))
+                                        Directory.CreateDirectory("Plans");
+                                    await System.IO.File.WriteAllTextAsync(fileName, problem);
+                                    using (Py.GIL())
                                     {
-                                        _cache.Remove(hash);
-                                        wc.UploadString($"{address}/api/Plans/Result", "POST", result);
+                                        dynamic rpc = PythonEngine.ModuleFromString("rpc", module);
+                                        dynamic Route = rpc.solver(fileName);
+                                        result = Convert.ToString(Route);
                                     }
+                                    using (WebClient wc = new WebClient())
+                                    {
+                                        string address;
+                                        if (_cache.TryGetValue(hash, out address))
+                                        {
+                                            _cache.Remove(hash);
+                                            wc.UploadString($"{address}/api/Plans/Result", "POST", result);
+                                        }
+                                    }
+
+                                }
+                                catch (Exception e)
+                                {
+                                    Console.WriteLine(e.Message);
+                                    Console.WriteLine(e.InnerException?.Message);
+                                    Console.WriteLine(e.StackTrace);
+                                }
+                                finally
+                                {
+                                    System.IO.File.Delete(fileName);
                                 }
                             });
                         }

@@ -36,22 +36,19 @@ namespace LogistiqueApi
                         options.RequireHttpsMetadata = Convert.ToBoolean(configuration["IdentityServer:RequireHttpsMetadata"]);
                     });
 
-            Python.Included.Installer.SetupPython().ContinueWith(e =>
-            {
-                PythonEngine.Initialize();
-                PythonEngine.BeginAllowThreads();
-            });
+            PythonEngine.Initialize();
+            PythonEngine.BeginAllowThreads();
 
             services.Configure<KestrelServerOptions>(options =>
             {
                 options.AllowSynchronousIO = true;
             });
 
-            services.AddHttpsRedirection(options =>
-            {
-                options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-                options.HttpsPort = 5001;
-            });
+            // services.AddHttpsRedirection(options =>
+            // {
+            //     options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+            //     options.HttpsPort = Convert.ToInt32(configuration["HttpsPort"]);
+            // });
             services.AddControllers();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

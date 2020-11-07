@@ -26,11 +26,11 @@ namespace LogistiqueApi
                     .UseKestrel(opts =>
         {
             var configuration = (IConfiguration)opts.ApplicationServices.GetService(typeof(IConfiguration));
-            opts.Listen(IPAddress.Loopback, 5000);
-            opts.Listen(IPAddress.Loopback, 5001, listenOptions =>
+            opts.Listen(IPAddress.Loopback, Convert.ToInt32(configuration["Bindings:Http:Port"]));
+            opts.Listen(IPAddress.Loopback, Convert.ToInt32(configuration["Bindings:Https:Port"]), listenOptions =>
             {
                 listenOptions.UseHttps(
-                    new X509Certificate2(configuration["certificates:ssl"],"")
+                    new X509Certificate2(configuration["certificates:ssl"], "")
                 );
             });
         })
